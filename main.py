@@ -187,13 +187,13 @@ def press9(event):
     entry.insert(99, "9")
 
 def pressPlus(event):
-    entry.insert(99, "+")
+    entry.insert(99, " + ")
 
 def pressMinus(event):
-    entry.insert(99, "-")
+    entry.insert(99, " - ")
 
 def pressMult(event):
-    entry.insert(99, "*")
+    entry.insert(99, " * ")
 
 
 
@@ -208,6 +208,9 @@ def getPrecedence(operator):
 def isOperand(c):
     return c.isdigit()
 
+def isSpace(c):
+    return c == ' '
+
 def isOperator(c):
     return c == '+' or c == '-' or c == '*'
 
@@ -220,25 +223,33 @@ def peek(stack):
 def infixToPostFix(infix):
     stack = []
     postfix = ''
-
+    firstspace = 1
     #scan the string from left to right
     for c in infix:
-        if isOperand(c):    #if we have an operand, add it to the postfix string
+        if isOperand(c): #or isSpace(c):    #if we have an operand or a space, add it to the postfix string
             postfix+=c
+        elif isSpace(c):
+            if firstspace == 1:
+                postfix+=c
+                firstspace+=1
+            else:
+                firstspace = firstspace -1
         else: #check if stack is empty, then compare precedence
             if isEmpty(stack) or (getPrecedence(c) > getPrecedence(peek(stack))):
                 stack.append(c)
             else: #go through stack and pop whatever is high precedence
                 for s in stack:
                     if getPrecedence(s) >= getPrecedence(c):
-                        postfix+=stack.pop(len(stack)-1)
+                        temp = " " + stack.pop(len(stack)-1) + " "
+                        postfix+= temp
                 stack.append(c)
     #any remaining operators in the stack get popped
     i=len(stack)
     while i != 0:
-        postfix+=stack.pop()
+        temp = " " + stack.pop() + " "
+        postfix+=temp
         i=i-1
-    #answer.insert(99, postfix)  #insert the postfix (as a test, delete this and call evaluate function)
+    print(postfix)
     entry.delete(0,99)          #delete the text in the entry
     answer.insert(99,evaluate(postfix))
 
@@ -246,13 +257,22 @@ def infixToPostFix(infix):
 def evaluate(postfix):
     #create a stack to store operands
     stack = []
-    for c in postfix:
-        if isOperand(c):
-            stack.append(c)
-        if isOperator(c):
+    temp = ""
+    for c in range(len(postfix)):
+        if isOperand(postfix[c]):    #if it's an operand we check two things if the next character is a number or space
+            if isSpace(postfix[c+1]):  #is we have an operand and the next character is a space, then we want to add to a string
+                temp+=postfix[c]    #add to our temp string, append, clear temp
+                stack.append(temp)
+                temp = ""
+                print("bug")
+            else:
+                temp+=postfix[c] #else if the next char is not a space but a digit then we just add current c to temp
+        elif isSpace(postfix[c]):
+            continue
+        elif isOperator(postfix[c]):
             num2=stack.pop()
             num1=stack.pop()
-            ans = str(eval(num1 + c + num2))
+            ans = str(eval(num1 + postfix[c] + num2))
             stack.append(ans)
     return stack.pop()
 
