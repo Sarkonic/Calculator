@@ -155,45 +155,58 @@ def clean(event):
 
 def press1(event):
     entry.insert(99, "1")
+    answer.delete(0,99)
 
 
 def press0(event):
     entry.insert(99, "0")
+    answer.delete(0, 99)
 
 
 def press2(event):
     entry.insert(99, "2")
+    answer.delete(0, 99)
 
 
 def press3(event):
     entry.insert(99, "3")
+    answer.delete(0, 99)
 
 def press4(event):
     entry.insert(99, "4")
+    answer.delete(0, 99)
 
 def press5(event):
     entry.insert(99, "5")
+    answer.delete(0, 99)
 
 def press6(event):
     entry.insert(99, "6")
+    answer.delete(0, 99)
 
 def press7(event):
     entry.insert(99, "7")
+    answer.delete(0, 99)
 
 def press8(event):
     entry.insert(99, "8")
+    answer.delete(0, 99)
 
 def press9(event):
     entry.insert(99, "9")
+    answer.delete(0, 99)
 
 def pressPlus(event):
     entry.insert(99, " + ")
+    answer.delete(0, 99)
 
 def pressMinus(event):
     entry.insert(99, " - ")
+    answer.delete(0, 99)
 
 def pressMult(event):
     entry.insert(99, " * ")
+    answer.delete(0, 99)
 
 
 
